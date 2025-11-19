@@ -2,29 +2,15 @@ pipeline {
     agent any
 
     tools {
-        maven 'M2_HOME'
-    }
-
-    options {
-       timeout(time: 5, unit: 'MINUTES')
-
-    }
-
-    environment {
-        APP_ENV = "DEV"
+        maven "M2_HOME"
     }
 
     stages {
-        stage('Code Checkout') {
+        stage('Build') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/salimmahdi/jenkis.git'
-            }
-        }
-
-        stage('Code Build') {
-            steps {
-                sh 'mvn --version'
+                timeout(time: 5, unit: 'MINUTES') {
+                    bat 'mvn -version'
+                }
             }
         }
     }
@@ -32,12 +18,6 @@ pipeline {
     post {
         always {
             echo "======always======"
-        }
-        success {
-            echo "=====pipeline executed successfully ====="
-        }
-        failure {
-            echo "======pipeline execution failed======"
         }
     }
 }
